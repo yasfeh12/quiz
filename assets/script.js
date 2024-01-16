@@ -36,7 +36,6 @@ const questions = [
         ]
     },
 ];
-
 const startBtn = document.getElementById("start");
 const questionTitleEl = document.getElementById("question-title");
 const choicesEl = document.getElementById("choices");
@@ -64,7 +63,6 @@ function startQuiz() {
     showQuestion();
     startTimer();
 }
-
 function startTimer() {
     const interval = setInterval(function () {
         if (timer <= 0 || currentQuestionIndex >= questions.length) {
@@ -76,7 +74,6 @@ function startTimer() {
         }
     }, 1000);
 }
-
 function showQuestion() {
     resetState();
     const currentQuestion = questions[currentQuestionIndex];
@@ -91,13 +88,11 @@ function showQuestion() {
         button.addEventListener("click", () => selectAnswer(answer.correct));
     });
 }
-
 function resetState() {
     while (choicesEl.firstChild) {
         choicesEl.removeChild(choicesEl.firstChild);
     }
 }
-
 function selectAnswer(correct) {
     if (correct) {
         score += timer; 
@@ -116,15 +111,11 @@ function selectAnswer(correct) {
         endQuiz();
     }
 }
-
-
 function endQuiz() {
     questionsDiv.classList.add("hide");
     endScreen.classList.remove("hide");
     finalScoreEl.textContent = score;
 }
-
 submitBtn.addEventListener("click", () => {
 });
-
 startBtn.addEventListener("click", startQuiz);
