@@ -37,3 +37,72 @@ const questions = [
     },
 ];
 
+const startBtn = document.getElementById("start");
+const questionTitleEl = document.getElementById("question-title");
+const choicesEl = document.getElementById("choices");
+const timerEl = document.getElementById("time");
+const finalScoreEl = document.getElementById("final-score");
+const initialsInput = document.getElementById("initials");
+const submitBtn = document.getElementById("submit");
+const startScreen = document.getElementById("start-screen");
+const questionsDiv = document.getElementById("questions");
+const endScreen = document.getElementById("end-screen");
+const feedbackDiv = document.getElementById("feedback");
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+
+
+
+function showQuestion() {
+    resetState();
+    const currentQuestion = questions[currentQuestionIndex];
+    questionTitleEl.textContent = currentQuestion.question;
+
+    currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.textContent = answer.text;
+        button.classList.add("btn");
+        choicesEl.appendChild(button);
+
+        button.addEventListener("click", () => selectAnswer(answer.correct));
+    });
+}
+
+function resetState() {
+    while (choicesEl.firstChild) {
+        choicesEl.removeChild(choicesEl.firstChild);
+    }
+}
+
+function selectAnswer(correct) {
+    if (correct) {
+        score += timer; 
+    } else {
+        timer -= 10;
+        if (timer < 0) {
+            timer = 0;
+        }
+    }
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        endQuiz();
+    }
+}
+
+
+function endQuiz() {
+    questionsDiv.classList.add("hide");
+    endScreen.classList.remove("hide");
+    finalScoreEl.textContent = score;
+}
+
+submitBtn.addEventListener("click", () => {
+});
+
+startBtn.addEventListener("click", startQuiz);
