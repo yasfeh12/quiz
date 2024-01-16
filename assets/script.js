@@ -55,7 +55,7 @@ let timer;
 function startQuiz() {
     currentQuestionIndex = 0;
     timer = 60;
-    score = 0; 
+    score = 0;
     timerEl.textContent = timer;
     startScreen.classList.add("hide");
     questionsDiv.classList.remove("hide");
@@ -95,7 +95,7 @@ function resetState() {
 }
 function selectAnswer(correct) {
     if (correct) {
-        score += timer; 
+        score += timer;
     } else {
         timer -= 10;
         if (timer < 0) {
@@ -116,6 +116,36 @@ function endQuiz() {
     endScreen.classList.remove("hide");
     finalScoreEl.textContent = score;
 }
+function saveScore(initials, score) {
+    const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+    const newScore = { initials, score };
+    highscores.push(newScore);
+    highscores.sort((a, b) => b.score - a.score);
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+}
 submitBtn.addEventListener("click", () => {
+    const userInitials = initialsInput.value.trim().toUpperCase();
+    if (userInitials !== "") {
+        saveScore(userInitials, score);
+        window.location.href = "highscores.html";
+    }
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const highscoresList = document.getElementById("highscores");
+    const clearBtn = document.getElementById("clear");
+
+    function displayHighscores() {
+        const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+        highscoresList.innerHTML = highscores
+            .map((entry, index) => `<li>${index + 1}. ${entry.initials}: ${entry.score}</li>`)
+            .join("");
+    }
+
+    displayHighscores();
+
+    clearBtn.addEventListener("click", () => {
+        localStorage.removeItem("highscores");
+        displayHighscores();
+    });
 });
 startBtn.addEventListener("click", startQuiz);
