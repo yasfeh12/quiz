@@ -53,7 +53,29 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 
+function startQuiz() {
+    currentQuestionIndex = 0;
+    timer = 60;
+    score = 0; 
+    timerEl.textContent = timer;
+    startScreen.classList.add("hide");
+    questionsDiv.classList.remove("hide");
+    endScreen.classList.add("hide");
+    showQuestion();
+    startTimer();
+}
 
+function startTimer() {
+    const interval = setInterval(function () {
+        if (timer <= 0 || currentQuestionIndex >= questions.length) {
+            clearInterval(interval);
+            endQuiz();
+        } else {
+            timer--;
+            timerEl.textContent = timer;
+        }
+    }, 1000);
+}
 
 function showQuestion() {
     resetState();
